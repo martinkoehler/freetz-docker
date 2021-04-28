@@ -1,0 +1,17 @@
+version: "2.2"
+
+services:
+    freetz:
+        build:
+            context: ./docker
+        container_name: docker-freetz
+        volumes:
+            - git:/home/user/git
+
+volumes:
+    git:
+        name: docker-git
+        driver_opts:
+            type: none
+            device: /home/mkoehler/docker/freetz-docker/vol/git
+            o: bind

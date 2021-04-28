@@ -1,0 +1,17 @@
+version: "2.2"
+
+services:
+    freetz:
+        build:
+            context: ./docker
+        container_name: <GLOBAL_PREFIX>freetz
+        volumes:
+            - git:/home/<USER>/git
+
+volumes:
+    git:
+        name: <GLOBAL_PREFIX>git
+        driver_opts:
+            type: none
+            device: <CURDIR>/vol/git
+            o: bind
