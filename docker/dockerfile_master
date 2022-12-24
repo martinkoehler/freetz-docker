@@ -16,7 +16,7 @@ RUN dpkg --add-architecture i386 && \
                autopoint libtool-bin make bzip2 libncurses5-dev libreadline-dev \
                zlib1g-dev flex bison patch texinfo tofrodos gettext pkg-config \
                ecj fastjar perl libstring-crc32-perl ruby gawk python \
-	       bsdmainutils sudo locales \
+	       bsdmainutils sudo locales netcat \
                libusb-dev unzip intltool libacl1-dev libcap-dev libc6-dev-i386 \
                lib32ncurses5-dev gcc-multilib lib32stdc++6 libglib2.0-dev && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install \
