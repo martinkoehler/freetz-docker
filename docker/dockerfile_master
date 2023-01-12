@@ -1,34 +1,38 @@
-FROM ubuntu:20.04
+#FROM ubuntu:20.04
+FROM debian:bullseye
 ARG UID=<UID>
 ENV USER=<USER>
 # Configure Timezone
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN dpkg --add-architecture i386 && \
-    apt-get -y update && \
+RUN    apt-get -y update && \
     apt-get -y upgrade && \
     apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install \
-               sudo vim-gtk3 wget inkscape bc \
-               rsync kmod execstack sqlite3 libsqlite3-dev libzstd-dev:i386 \
-               libzstd-dev cmake lib32z1-dev unar inkscape imagemagick \
-               subversion git bc wget sudo ccache gcc g++ binutils autoconf automake \
-               autopoint libtool-bin make bzip2 libncurses5-dev libreadline-dev \
-               zlib1g-dev flex bison patch texinfo tofrodos gettext pkg-config \
-               ecj fastjar perl libstring-crc32-perl ruby gawk python \
-	       bsdmainutils sudo locales netcat \
-               libusb-dev unzip intltool libacl1-dev libcap-dev libc6-dev-i386 \
-               lib32ncurses5-dev gcc-multilib lib32stdc++6 libglib2.0-dev && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install \
-               sqlite3:i386 && \
+       pv cpio rsync kmod imagemagick inkscape graphicsmagick subversion \
+       git bc unar wget sudo gcc g++ binutils autoconf automake autopoint \
+       libtool-bin make bzip2 libncurses5-dev libreadline-dev zlib1g-dev \
+       flex bison patch texinfo tofrodos gettext pkg-config ecj fastjar \ 
+       perl libstring-crc32-perl ruby gawk python2 python-is-python3 \ 
+       libusb-dev unzip intltool libacl1-dev libcap-dev libc6-dev-i386 \
+       lib32ncurses5-dev gcc-multilib bsdmainutils lib32stdc++6 \
+       libglib2.0-dev ccache cmake lib32z1-dev libsqlite3-dev sqlite3 \
+       libzstd-dev netcat curl uuid-dev libssl-dev libgnutls28-dev sharutils \
+       locales && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
+#excestack-package muss manuell installiert werden, \
+# siehe https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=921401
+RUN wget http://ftp.de.debian.org/debian/pool/main/p/prelink/execstack_0.0.20131005-1+b10_amd64.deb && \
+DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        ./execstack_0.0.20131005-1+b10_amd64.deb
 
 # Create the user
 RUN useradd -m -u ${UID} -G sudo -s /bin/bash "${USER}" && passwd --delete "${USER}"
 WORKDIR /home/${USER}
 # ... and make sure file permissions are ok
-RUN echo umask 0022 >> .bashrc
+RUN echo umask 0022 >> .bashrc && \
+    echo "export PATH=$PATH:/usr/sbin" >> ~/.bashrc
 
 USER "${USER}"
 CMD ["/drun.sh"]
