@@ -19,3 +19,4 @@ Note that these files are persistent, so for new versions a `git pull` should be
 
 The images are directly accessible from the host under `vol/git` (e.g. vol/git/freetz-ng/images`
 
+If you encounter problems (e.g. incompatible libraries, ... during `make`) rebuilding the toolchain from scratch is usually  helpful. The easiest way to achieve this is to save your `.config`, then clone the repo again and copy your saved `.config` into the cloned repo.
