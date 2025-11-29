@@ -14,9 +14,9 @@ else
 endif
 
 ifeq ($(strip $(DOCKER_IN_GROUPS)),)
-	DC_CMD=sudo docker-compose
+	DC_CMD=sudo docker compose
 else
-	DC_CMD=docker-compose
+	DC_CMD=docker compose
 endif
 
 

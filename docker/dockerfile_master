@@ -1,5 +1,4 @@
-#FROM ubuntu:20.04
-FROM debian:bullseye
+FROM debian:trixie
 ARG UID=<UID>
 ENV USER=<USER>
 # Configure Timezone
@@ -9,27 +8,17 @@ RUN    apt-get -y update && \
     apt-get -y upgrade && \
     apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install \
-       autoconf automake autopoint bc binutils bison bsdmainutils bzip2 \
-       ccache cmake cpio curl ecj \
-       flex g++ gawk gcc gcc-multilib gettext git graphicsmagick imagemagick inkscape intltool \
-       java-wrappers kmod lib32ncurses5-dev lib32stdc++6 lib32z1-dev libacl1-dev \
-       libc6-dev-i386 libcap-dev \
-       libelf-dev libglib2.0-dev libgnutls28-dev libncurses5-dev libreadline-dev \
-       libsqlite3-dev \
-       libssl-dev libstring-crc32-perl libtool-bin libusb-dev libxml2-dev libzstd-dev \ 
-       make netcat patch \
-       perl pkg-config pv rsync sharutils sqlite3 subversion sudo texinfo tofrodos \
-       unar unzip uuid-dev \
-       wget zlib1g-dev \
+	autopoint bc binutils bison bsdmainutils bzip2 ccache cmake curl ecj flex ftp g++ gawk gcc \
+	gcc-multilib gettext git graphicsmagick imagemagick inkscape intltool java-wrappers kmod \
+	lib32ncurses-dev lib32stdc++6 lib32z1-dev libacl1-dev libc6-dev-i386 libcap-dev libelf-dev \
+	libglib2.0-dev libgnutls28-dev libncurses5-dev libreadline-dev libsqlite3-dev libssl-dev \
+	libstring-crc32-perl libtool-bin libusb-dev libxml2-dev libzstd-dev make  \
+	netcat-traditional patch patchutils \
+	perl pkg-config pv rsync sharutils sqlite3 subversion sudo texinfo tofrodos unar unzip \
+	uuid-dev wget zlib1g-dev \
        locales && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
-#excestack-package muss manuell installiert werden, \
-# siehe https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=921401
-RUN wget http://ftp.de.debian.org/debian/pool/main/p/prelink/execstack_0.0.20131005-1+b10_amd64.deb && \
-DEBIAN_FRONTEND=noninteractive apt-get -y install \
-        ./execstack_0.0.20131005-1+b10_amd64.deb
-
 # Create the user
 RUN useradd -m -u ${UID} -G sudo -s /bin/bash "${USER}" && passwd --delete "${USER}"
 WORKDIR /home/${USER}
