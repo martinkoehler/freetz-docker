@@ -25,8 +25,8 @@ RUN useradd -m -u ${UID} -G sudo -s /bin/bash "${USER}" && passwd --delete "${US
 WORKDIR /home/${USER}
 # ... and make sure file permissions are ok
 RUN echo umask 0022 >> .bashrc && \
-    echo "export PATH=$PATH:/usr/sbin" >> ~/.bashrc && \
-    sed 's/#alias/alias/g' -i ~/.bashrc
+    echo "export PATH=$PATH:/usr/sbin" >> .bashrc && \
+    sed 's/#alias/alias/g' -i .bashrc
 
 USER "${USER}"
 CMD ["/drun.sh"]
