@@ -8,15 +8,16 @@ RUN    apt-get -y update && \
     apt-get -y upgrade && \
     apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install \
-	autopoint bc binutils bison bsdmainutils bzip2 ccache cmake curl ecj flex ftp g++ gawk gcc \
-	gcc-multilib gettext git graphicsmagick imagemagick inkscape intltool java-wrappers kmod \
-	lib32ncurses-dev lib32stdc++6 lib32z1-dev libacl1-dev libc6-dev-i386 libcap-dev libelf-dev \
-	libglib2.0-dev libgnutls28-dev libncurses5-dev libreadline-dev libsqlite3-dev libssl-dev \
-	libstring-crc32-perl libtool-bin libusb-dev libxml2-dev libzstd-dev make  \
-	netcat-traditional patch patchutils \
-	perl pkg-config pv rsync sharutils sqlite3 subversion sudo texinfo tofrodos unar unzip \
-	uuid-dev wget zlib1g-dev \
-       locales && \
+        autopoint bc binutils bison bsdmainutils bzip2 ccache cmake curl ecj flex ftp g++ gawk gcc \
+        gcc-multilib gettext git graphicsmagick imagemagick inkscape intltool java-wrappers kmod \
+        lib32ncurses-dev lib32stdc++6 lib32z1-dev libacl1-dev libc6-dev-i386 libcap-dev libelf-dev \
+        libglib2.0-dev libgnutls28-dev libncurses5-dev libreadline-dev libsqlite3-dev libssl-dev \
+        libstring-crc32-perl libtool-bin libusb-dev libxml2-dev libzstd-dev make  \
+        netcat-traditional patch patchutils \
+        perl pkg-config pv rsync sharutils sqlite3 subversion sudo texinfo tofrodos unar unzip \
+        uuid-dev wget zlib1g-dev \
+        vim \
+        locales && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
 # Create the user
@@ -24,7 +25,8 @@ RUN useradd -m -u ${UID} -G sudo -s /bin/bash "${USER}" && passwd --delete "${US
 WORKDIR /home/${USER}
 # ... and make sure file permissions are ok
 RUN echo umask 0022 >> .bashrc && \
-    echo "export PATH=$PATH:/usr/sbin" >> ~/.bashrc
+    echo "export PATH=$PATH:/usr/sbin" >> ~/.bashrc && \
+    sed 's/#alias/alias/g' -i ~/.bashrc
 
 USER "${USER}"
 CMD ["/drun.sh"]
